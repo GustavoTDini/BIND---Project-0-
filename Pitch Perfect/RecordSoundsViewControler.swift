@@ -12,25 +12,66 @@ import AVFoundation
 class RecordSoundsViewControler: UIViewController, AVAudioRecorderDelegate {
     
     var audioRecorder: AVAudioRecorder!
+    
+    // MARK: Outlets
 
     @IBOutlet weak var RecordButton: UIButton!
-    
     @IBOutlet weak var StopRecordingButton: UIButton!
-    
     @IBOutlet weak var RecordLabel: UILabel!
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        StopRecordingButton.isEnabled = false
-        // Do any additional setup after loading the view, typically from a nib.
-    }
+    // MARK: Actions
 
     @IBAction func RecordButtonAction(_ sender: Any) {
-        RecordLabel.text = "Recording in Progress"
-        RecordButton.isEnabled = false
-        StopRecordingButton.isEnabled = true
-        
+        showUI(recording: true)
+        createSoundFlie()
+    }
+    
+    @IBAction func StopRecordButtonAction(_ sender: Any) {
+        showUI(recording: false)
+        audioRecorder.stop()
+        let audioSession = AVAudioSession.sharedInstance()
+        try! audioSession.setActive(false)
+    }
+    
+   // MARK: LifeCycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        showUI(recording: false)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "stopRecording"{
+            let playSoundsVC = segue.destination as! PlaySoundsViewController
+            let recordedAudioURL = sender as! URL
+            playSoundsVC.recordedAudioURL = recordedAudioURL
+        }
+    }
+    
+    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+        if flag {
+            performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
+        } else {
+            createAlertMessage(message: "Recording was not Successful")
+        }
+    }
+    
+    // MARK: Helper Functions
+    
+    func showUI(recording: Bool){
+        if recording{
+            RecordLabel.text = "Recording in Progress"
+            RecordButton.isEnabled = false
+            StopRecordingButton.isEnabled = true
+        } else{
+            RecordLabel.text = "Tap to Record"
+            RecordButton.isEnabled = true
+            StopRecordingButton.isEnabled = false
+        }
+    }
+    
+    func createSoundFlie(){
         let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0] as String
         let recordingName = "recordedVoice.wav"
         let pathArray = [dirPath, recordingName]
@@ -46,31 +87,10 @@ class RecordSoundsViewControler: UIViewController, AVAudioRecorderDelegate {
         audioRecorder.record()
     }
     
-    
-    @IBAction func StopRecordButtonAction(_ sender: Any) {
-        RecordLabel.text = "Tap to Record"
-        RecordButton.isEnabled = true
-        StopRecordingButton.isEnabled = false
-        audioRecorder.stop()
-        let audioSession = AVAudioSession.sharedInstance()
-        try! audioSession.setActive(false)
-    }
-    
-    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        if flag {
-            performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
-            print("FinishedRecording")
-        } else {
-            print("Recording was Not Successful")
-        }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "stopRecording"{
-            let playSoundsVC = segue.destination as! PlaySoundsViewController
-            let recordedAudioURL = sender as! URL
-            playSoundsVC.recordedAudioURL = recordedAudioURL
-        }
+    func createAlertMessage(message: String){
+        let alert = UIAlertController(title: "Ops!", message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
 }

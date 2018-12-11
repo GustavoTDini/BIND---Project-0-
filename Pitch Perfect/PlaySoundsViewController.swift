@@ -55,6 +55,8 @@ class PlaySoundsViewController: UIViewController {
     @IBAction func stopButtonPressed(_ sender: AnyObject) {
         stopAudio()
     }
+    
+        // MARK: LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
