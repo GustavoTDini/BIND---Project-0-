@@ -14,8 +14,8 @@ class PlaySoundsViewController: UIViewController {
     // MARK: Outlets
     
     @IBOutlet weak var snailButton: UIButton!
-    @IBOutlet weak var chipmunkButton: UIButton!
     @IBOutlet weak var rabbitButton: UIButton!
+    @IBOutlet weak var chipmunkButton: UIButton!
     @IBOutlet weak var vaderButton: UIButton!
     @IBOutlet weak var echoButton: UIButton!
     @IBOutlet weak var reverbButton: UIButton!
@@ -27,25 +27,25 @@ class PlaySoundsViewController: UIViewController {
     var audioPlayerNode: AVAudioPlayerNode!
     var stopTimer: Timer!
     
-    enum ButtonType: Int {
-        case slow = 0, fast, chipmunk, vader, echo, reverb
+    enum ButtonType: Int, CaseIterable {
+        case snailButton = 1, rabbitButton, chipmunkButton, vaderButton, echoButton, reverbButton
     }
     
     // MARK: Actions
     
     @IBAction func playSoundForButton(_ sender: UIButton) {
         switch(ButtonType(rawValue: sender.tag)!) {
-        case .slow:
+        case .snailButton:
             playSound(rate: 0.5)
-        case .fast:
+        case .rabbitButton:
             playSound(rate: 1.5)
-        case .chipmunk:
+        case .chipmunkButton:
             playSound(pitch: 1000)
-        case .vader:
+        case .vaderButton:
             playSound(pitch: -1000)
-        case .echo:
+        case .echoButton:
             playSound(echo: true)
-        case .reverb:
+        case .reverbButton:
             playSound(reverb: true)
         }
         
@@ -66,8 +66,14 @@ class PlaySoundsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureUI(.notPlaying)
+        scaleFitButtons()
     }
     
-
+    func scaleFitButtons(){
+        for thisButton in ButtonType.allCases{
+            let button = self.view.viewWithTag(thisButton.rawValue) as? UIButton
+            button?.imageView?.contentMode = .scaleAspectFit
+        }
+    }
 
 }
