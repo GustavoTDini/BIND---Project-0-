@@ -22,7 +22,7 @@
                                 <rect key="frame" x="110" y="256" width="155" height="155"/>
                                 <state key="normal" image="Record"/>
                                 <connections>
-                                    <action selector="RecordButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Dq0-L4-ivB"/>
+                                    <action selector="recordButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Dq0-L4-ivB"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" layoutMarginsFollowReadableWidth="YES" text="Tap to Record" textAlignment="center" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="250" translatesAutoresizingMaskIntoConstraints="NO" id="FF5-fo-KRs" userLabel="Tap to Record Label">
@@ -39,7 +39,7 @@
                                 </constraints>
                                 <state key="normal" image="Stop"/>
                                 <connections>
-                                    <action selector="StopRecordButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6z9-EH-RKz"/>
+                                    <action selector="stopRecordButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6z9-EH-RKz"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -57,9 +57,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="n6J-Vu-o93"/>
                     <connections>
-                        <outlet property="RecordButton" destination="4Pr-hq-Jfm" id="hO5-LX-7SP"/>
-                        <outlet property="RecordLabel" destination="FF5-fo-KRs" id="wWn-Zs-xcl"/>
-                        <outlet property="StopRecordingButton" destination="qsV-Dc-Go8" id="Njl-DY-wPC"/>
+                        <outlet property="recordButton" destination="4Pr-hq-Jfm" id="hO5-LX-7SP"/>
+                        <outlet property="recordLabel" destination="FF5-fo-KRs" id="wWn-Zs-xcl"/>
+                        <outlet property="stopRecordingButton" destination="qsV-Dc-Go8" id="Njl-DY-wPC"/>
                         <segue destination="1Br-C0-xrm" kind="show" identifier="stopRecording" id="J6n-Ps-US1"/>
                     </connections>
                 </viewController>

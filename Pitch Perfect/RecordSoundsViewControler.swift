@@ -15,20 +15,20 @@ class RecordSoundsViewControler: UIViewController, AVAudioRecorderDelegate {
     
     // MARK: Outlets
 
-    @IBOutlet weak var RecordButton: UIButton!
-    @IBOutlet weak var StopRecordingButton: UIButton!
-    @IBOutlet weak var RecordLabel: UILabel!
+    @IBOutlet weak var recordButton: UIButton!
+    @IBOutlet weak var stopRecordingButton: UIButton!
+    @IBOutlet weak var recordLabel: UILabel!
     
     
     // MARK: Actions
 
-    @IBAction func RecordButtonAction(_ sender: Any) {
-        showUI(recording: true)
+    @IBAction func recordButtonAction(_ sender: Any) {
+        showUI(true)
         createSoundFlie()
     }
     
-    @IBAction func StopRecordButtonAction(_ sender: Any) {
-        showUI(recording: false)
+    @IBAction func stopRecordButtonAction(_ sender: Any) {
+        showUI(false)
         audioRecorder.stop()
         let audioSession = AVAudioSession.sharedInstance()
         try! audioSession.setActive(false)
@@ -38,7 +38,7 @@ class RecordSoundsViewControler: UIViewController, AVAudioRecorderDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        showUI(recording: false)
+        showUI(false)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -59,16 +59,10 @@ class RecordSoundsViewControler: UIViewController, AVAudioRecorderDelegate {
     
     // MARK: Helper Functions
     
-    func showUI(recording: Bool){
-        if recording{
-            RecordLabel.text = "Recording in Progress"
-            RecordButton.isEnabled = false
-            StopRecordingButton.isEnabled = true
-        } else{
-            RecordLabel.text = "Tap to Record"
-            RecordButton.isEnabled = true
-            StopRecordingButton.isEnabled = false
-        }
+    func showUI(_ recording: Bool = false){
+        stopRecordingButton.isEnabled = recording
+        recordButton.isEnabled = !recording
+        recordLabel.text = recording ? "Recording in Progress":"Tap to Record"
     }
     
     func createSoundFlie(){
